@@ -1,0 +1,27 @@
+Logic Document: Collaborative To-Do Board
+Smart Assign Logic
+The Smart Assign feature ensures tasks are distributed efficiently by assigning a task to the user with the fewest active tasks. Here’s how it works:
+
+When the "Smart Assign" button is clicked on a task, the backend retrieves all users from the MongoDB database.
+It then uses a MongoDB aggregation query to count the number of tasks each user has in the "Todo" or "In Progress" statuses. This focuses on active tasks, ignoring "Done" tasks to balance workload.
+The user with the lowest task count is selected. If multiple users have the same count, the first one is chosen (this could be randomized in a future iteration).
+The task’s assignedUser field is updated to the selected user’s ID, the task version is incremented, and the action is logged in the ActionLog collection.
+The update is broadcast via Socket.IO to all clients, ensuring real-time synchronization.
+
+For example, if User A has 3 tasks, User B has 1 task, and User C has 5 tasks, clicking Smart Assign on a task assigns it to User B, as they have the fewest active tasks.
+Conflict Handling Logic
+Conflict handling prevents data loss when multiple users edit the same task simultaneously. Here’s the process:
+
+Each task in the database has a version field, starting at 1 and incrementing with each update.
+When a user submits an edit (e.g., changing the title or status), the frontend sends the current task version along with the updates.
+The backend compares the sent version with the task’s current version in the database. If they match, the update proceeds, the version increments, and the change is broadcast via Socket.IO.
+If the versions differ (indicating another user edited the task first), the backend returns a 409 Conflict status with both the current task (from the database) and the proposed changes (from the user).
+The frontend displays a modal showing both versions (e.g., current title/description vs. proposed title/description). The user can choose to:
+Merge: Manually select fields from both versions (e.g., keep the current title but use the proposed description).
+Overwrite: Apply the proposed changes, discarding the current version.
+
+
+Once resolved, the backend updates the task with the chosen values, increments the version, logs the action, and broadcasts the update.
+
+For example, if User A changes a task’s title to "Meeting Notes" and User B changes its description to "Discuss project" simultaneously, User B’s frontend will show a conflict modal with both versions. User B can merge by keeping the new title and description or overwrite with their changes.
+This approach ensures no data is lost and users can make informed decisions about concurrent edits.
