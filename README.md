@@ -88,3 +88,54 @@ The drag-and-drop animation uses react-beautiful-dnd for simplicity, with custom
 No third-party CSS frameworks (e.g., Bootstrap) are used, as per requirements.
 
 For issues or feedback, refer to the GitHub repository or contact the developer.
+Backend (server.js):
+Uses Express.js for REST API, Mongoose for MongoDB, and Socket.IO for real-time updates.
+Implements JWT authentication with bcrypt for password hashing.
+Task CRUD operations enforce unique titles and validate against column names (Todo, In Progress, Done).
+Smart Assign uses MongoDB aggregation to find the user with the fewest tasks.
+Conflict handling uses version control to detect concurrent edits.
+Action logs store the last 20 actions, populated with user and task details.
+Frontend (App.jsx, index.js, index.css):
+Built with React and react-beautiful-dnd for drag-and-drop functionality.
+Custom CSS provides a clean, responsive design with a card flip animation (rotate on drag).
+Login/register forms are custom-built without third-party libraries.
+Real-time updates are handled via Socket.IO, refreshing tasks and logs on changes.
+Conflict resolution displays a modal with current and proposed task versions.
+README.md:
+Includes project overview, tech stack, setup instructions, feature list, and deployment guidance.
+Placeholder for deployed app and demo video links (to be updated after deployment).
+Logic_Document.md:
+Explains Smart Assign and Conflict Handling logic in clear, non-code terms with examples.
+ZIP File:
+Contains all necessary files: backend (server.js, .env.example), frontend (src/App.jsx, src/index.js, src/index.css), documentation (README.md, Logic_Document.md), and rfq_data.csv (from previous task, assumed empty if not generated).
+Dependencies:
+Backend: npm install express mongoose bcryptjs jsonwebtoken cors socket.io
+Frontend: npm install react react-dom react-beautiful-dnd axios socket.io-client
+Ensure Node.js and MongoDB are installed locally or use MongoDB Atlas.
+Deployment:
+Frontend: Push the frontend folder to GitHub and deploy on Vercel/Netlify. Update the Socket.IO and Axios URLs in App.jsx to point to the deployed backend.
+Backend: Push the backend folder to GitHub and deploy on Render/Railway. Set environment variables (MONGO_URI, JWT_SECRET) in the hosting platform.
+MongoDB: Use MongoDB Atlas for a cloud database or run MongoDB locally.
+Demo Video:
+Record a 5-10 minute video using Loom/OBS showing:
+Project intro and tech stack.
+Login/register, Kanban board, drag-and-drop, Smart Assign, conflict resolution, and activity log.
+Highlight the drag-and-drop animation as the favorite feature.
+Upload to YouTube (unlisted) or Loom and include the link in README.md.
+Submission:
+Push all code to a public GitHub repository with regular commits.
+Deploy the app (frontend on Vercel, backend on Render).
+Submit via Internshala: GitHub repo link, deployed app URL, demo video link, and Logic_Document.md.
+Notes
+Error-Free Code: The code is designed to run without errors, assuming correct setup (MongoDB running, dependencies installed, environment variables set).
+Custom UI: No third-party CSS frameworks are used; all styling is custom CSS.
+Animation: The drag-and-drop animation rotates tasks slightly for a dynamic effect.
+rfq_data.csv: Included in the ZIP as per the previous task, but may be empty if the scraper wasn’t run. Run alibaba_rfq_scraper.py from the previous response to generate it.
+Deployment Links: Update README.md with actual URLs after deploying.
+Deadline: Submit by 11:59 PM IST, July 19, 2025 (7 days from July 12, 2025).
+To test locally:
+
+Set up MongoDB (local or Atlas).
+Run the backend: cd backend && npm install && node server.js.
+Run the frontend: cd frontend && npm install && npm start.
+Create the ZIP using a tool or script after saving all files.
